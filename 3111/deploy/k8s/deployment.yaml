@@ -84,7 +84,7 @@ spec:
             - name: secret-datasource
               mountPath: /usr/src/myapp/datasource
             - name: secret-api-token
-              mountPath: /usr/src/myapp/token
+              mountPath: /usr/src/myapp/kube-apiserver
             - name: downward-api-pod-info
               mountPath: /usr/src/myapp/downward-api
       volumes:

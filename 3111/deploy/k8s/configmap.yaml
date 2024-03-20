@@ -15,4 +15,4 @@ data:
   application_role: "ALL"
   postgresql_filepath: "/usr/src/myapp/datasource/postgresql-info.yaml"
   downward_api_filepath: "/usr/src/myapp/downward-api/"
-  api_token_path: "/usr/src/myapp/token/"
+  api_token_path: "/usr/src/myapp/kube-apiserver/"
