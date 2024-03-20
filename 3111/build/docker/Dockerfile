@@ -1,5 +1,5 @@
 FROM openjdk:17
-COPY ./app-SNAPSHOT.jar /usr/src/myapp/app.jar
+COPY ./app-3.0.0-SNAPSHOT.jar /usr/src/myapp/app.jar
 ENTRYPOINT ["java", "-Dspring.profiles.active=${spring_profiles_active}", \
                     "-Dapplication.role=${application_role}", \
                     "-Dpostgresql.filepath=${postgresql_filepath}", \
