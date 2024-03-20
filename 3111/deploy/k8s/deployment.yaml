@@ -83,7 +83,7 @@ spec:
             - name: secret-datasource
               mountPath: /usr/src/myapp/datasource
             - name: downward-api-pod-info
-              mountPath: /usr/src/myapp/downward-api/pod-info.yaml
+              mountPath: /usr/src/myapp/downward-api
       volumes:
         - name: secret-datasource
           secret:
@@ -91,9 +91,12 @@ spec:
         - name: downward-api-pod-info
           downwardAPI:
             items:
-              - path: "pod_status"
+              - path: "metadata_labels"
                 fieldRef:
-                  fieldPath: status.phase
-              - path: "container_status"
+                  fieldPath: metadata.labels
+              - path: "metadata_annotations"
                 fieldRef:
-                  fieldPath: status.containerStatuses[0].state
+                  fieldPath: metadata.annotations
+              - path: "metadata_name"
+                fieldRef:
+                  fieldPath: metadata.name
