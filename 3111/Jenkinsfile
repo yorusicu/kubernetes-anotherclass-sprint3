@@ -13,13 +13,15 @@ pipeline {
 
         // 실습 넘버링
         CLASS_NUM = '3111'
+        // 버전
+        APP_VERSION = '3.0.0'
     }
     
     stages {
         stage('소스파일 체크아웃') {
             steps {
                 // 본인의 username으로 하실 분은 수정해주세요.
-                git branch: 'main', url: 'https://github.com/k8s-1pro/kubernetes-anotherclass-api-tester.git'
+                git branch: "${APP_VERSION}", url: 'https://github.com/k8s-1pro/kubernetes-anotherclass-api-tester.git'
             }
         }
 
@@ -43,10 +45,10 @@ pipeline {
         stage('컨테이너 빌드') {
             steps {
                 // jar 파일 복사
-                sh "cp ./build/libs/app-0.0.1-SNAPSHOT.jar ./${CLASS_NUM}/build/docker/app-0.0.1-SNAPSHOT.jar"
+                sh "cp ./build/libs/app-${APP_VERSION}-SNAPSHOT.jar ./${CLASS_NUM}/build/docker/app-${APP_VERSION}-SNAPSHOT.jar"
 
                 // 도커 빌드
-                sh "docker build -t ${DOCKERHUB_USERNAME}/api-tester:3.0.0 ./${CLASS_NUM}/build/docker"
+                sh "docker build -t ${DOCKERHUB_USERNAME}/api-tester:${APP_VERSION} ./${CLASS_NUM}/build/docker"
             }
         }
 
@@ -55,9 +57,9 @@ pipeline {
                 // DockerHub로 이미지 업로드
                 script{
                     if (DOCKERHUB_USERNAME != "1pro") {
-                        echo "docker push ${DOCKERHUB_USERNAME}/api-tester:3.0.0"
+                        echo "docker push ${DOCKERHUB_USERNAME}/api-tester:${APP_VERSION}0"
                     } else {
-                        sh "docker push ${DOCKERHUB_USERNAME}/api-tester:3.0.0"
+                        sh "docker push ${DOCKERHUB_USERNAME}/api-tester:${APP_VERSION}"
                     }
                 }
             }
