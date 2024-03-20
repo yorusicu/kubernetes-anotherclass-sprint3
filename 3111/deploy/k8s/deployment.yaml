@@ -29,6 +29,7 @@ spec:
         instance: api-tester-3111
         version: 3.0.0
     spec:
+      serviceAccountName: api-tester-3111
       nodeSelector:
         kubernetes.io/hostname: k8s-master
       containers:
@@ -97,6 +98,3 @@ spec:
               - path: "metadata_annotations"
                 fieldRef:
                   fieldPath: metadata.annotations
-              - path: "metadata_name"
-                fieldRef:
-                  fieldPath: metadata.name

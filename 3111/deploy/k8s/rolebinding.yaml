@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  namespace: anotherclass-311
+  name: api-tester-3111
+subjects:
+  - kind: ServiceAccount
+    namespace: kube-system
+    name: api-tester-3111
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: api-tester-3111
