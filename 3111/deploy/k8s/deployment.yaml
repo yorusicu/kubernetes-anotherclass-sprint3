@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: anotherclass-311
+  name: api-tester-3111
+  labels:
+    part-of: k8s-anotherclass
+    component: backend-server
+    name: api-tester
+    instance: api-tester-3111
+    version: 3.0.0
+    managed-by: kubectl
+spec:
+  selector:
+    matchLabels:
+      part-of: k8s-anotherclass
+      component: backend-server
+      name: api-tester
+      instance: api-tester-3111
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        part-of: k8s-anotherclass
+        component: backend-server
+        name: api-tester
+        instance: api-tester-3111
+        version: 3.0.0
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: k8s-master
+      containers:
+        - name: api-tester-3111
+          image: 1pro/api-tester:3.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+          envFrom:
+            - configMapRef:
+                name: api-tester-3111-properties
+          env:
+            - name: env_pod_name
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: env_node_name
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: env_pod_ip
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          startupProbe:
+            httpGet:
+              path: "/startup"
+              port: 8080
+            periodSeconds: 5
+            failureThreshold: 24
+          readinessProbe:
+            httpGet:
+              path: "/readiness"
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: "/liveness"
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "100m"
+            limits:
+              memory: "200Mi"
+              cpu: "200m"
+          volumeMounts:
+            - name: secret-datasource
+              mountPath: /usr/src/myapp/datasource
+            - name: downward-api-pod-info
+              mountPath: /usr/src/myapp/downward-api/pod-info.yaml
+      volumes:
+        - name: secret-datasource
+          secret:
+            secretName: api-tester-3111-postgresql
+        - name: downward-api-pod-info
+          downwardAPI:
+            items:
+              - path: "pod_status"
+                fieldRef:
+                  fieldPath: status.phase
+              - path: "container_status"
+                fieldRef:
+                  fieldPath: status.containerStatuses[0].state
