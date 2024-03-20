@@ -83,12 +83,17 @@ spec:
           volumeMounts:
             - name: secret-datasource
               mountPath: /usr/src/myapp/datasource
+            - name: secret-api-token
+              mountPath: /usr/src/myapp/token
             - name: downward-api-pod-info
               mountPath: /usr/src/myapp/downward-api
       volumes:
         - name: secret-datasource
           secret:
             secretName: api-tester-3111-postgresql
+        - name: secret-api-token
+          secret:
+            secretName: api-tester-3111-token
         - name: downward-api-pod-info
           downwardAPI:
             items:
