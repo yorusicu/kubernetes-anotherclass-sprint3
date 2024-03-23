@@ -17,7 +17,7 @@ spec:
       component: backend-server
       name: api-tester
       instance: api-tester-3111
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
   template:
