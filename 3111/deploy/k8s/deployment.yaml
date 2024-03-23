@@ -56,7 +56,7 @@ spec:
                 fieldRef:
                   fieldPath: status.podIP
           terminationMessagePath: "/usr/src/myapp/log/termination.message"
-          terminationGracePeriodSeconds: 60
+          terminationGracePeriodSeconds: 30
           lifecycle:
             preStop:
               exec:
