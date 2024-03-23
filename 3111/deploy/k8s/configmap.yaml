@@ -14,5 +14,6 @@ data:
   spring_profiles_active: "dev"
   application_role: "ALL"
   postgresql_filepath: "/usr/src/myapp/datasource/postgresql-info.yaml"
-  downward_api_filepath: "/usr/src/myapp/downward-api/"
-  api_token_path: "/usr/src/myapp/kube-apiserver/"
+  downward_volume_filepath: "/usr/src/myapp/downward-api/"
+  api-token_filepath: "/usr/src/myapp/kube-apiserver/"
+  termination_message-path: "/usr/src/myapp/log/shutdown.log"

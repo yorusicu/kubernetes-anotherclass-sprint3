@@ -5,7 +5,7 @@ metadata:
   name: api-tester-3111
 subjects:
   - kind: ServiceAccount
-    namespace: kube-system
+    namespace: anotherclass-311
     name: api-tester-3111
 roleRef:
   apiGroup: rbac.authorization.k8s.io
