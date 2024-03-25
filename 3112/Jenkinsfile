@@ -1,0 +1,79 @@
+pipeline {
+    agent any
+
+    tools {
+        gradle 'gradle-7.6.1'
+        jdk 'jdk-17'
+    }
+
+    environment {
+        // 본인의 username으로 하실 분은 수정해주세요.
+        DOCKERHUB_USERNAME = '1pro'
+        GITHUB_URL = 'https://github.com/k8s-1pro/kubernetes-anotherclass-sprint3.git'
+
+        // 실습 넘버링
+        CLASS_NUM = '3112'
+        // 버전
+        APP_VERSION = '3.0.0'
+    }
+    
+    stages {
+        stage('소스파일 체크아웃') {
+            steps {
+                // 본인의 username으로 하실 분은 수정해주세요.
+                git branch: "${APP_VERSION}", url: 'https://github.com/k8s-1pro/kubernetes-anotherclass-api-tester.git'
+            }
+        }
+
+        stage('소스 빌드') {
+            steps {
+                // 755권한 필요 (윈도우에서 Git으로 소스 업로드시 권한은 644)
+                sh "chmod +x ./gradlew"
+                sh "gradle clean build -x test"
+            }
+        }
+
+        stage('릴리즈파일 체크아웃') {
+            steps {
+                checkout scmGit(branches: [[name: '*/main']],
+                    extensions: [[$class: 'SparseCheckoutPaths',
+                    sparseCheckoutPaths: [[path: "/${CLASS_NUM}"]]]],
+					userRemoteConfigs: [[url: "${GITHUB_URL}"]])
+            }
+        }
+
+        stage('컨테이너 빌드') {
+            steps {
+                // jar 파일 복사
+                sh "cp ./build/libs/app-${APP_VERSION}-SNAPSHOT.jar ./${CLASS_NUM}/build/docker/app-${APP_VERSION}-SNAPSHOT.jar"
+
+                // 도커 빌드
+                sh "docker build -t ${DOCKERHUB_USERNAME}/api-tester:${APP_VERSION} ./${CLASS_NUM}/build/docker"
+            }
+        }
+
+        stage('컨테이너 업로드') {
+            steps {
+                // DockerHub로 이미지 업로드
+                script{
+                    if (DOCKERHUB_USERNAME == "1pro") {
+                        echo "docker push ${DOCKERHUB_USERNAME}/api-tester:${APP_VERSION}"
+                    } else {
+                        sh "docker push ${DOCKERHUB_USERNAME}/api-tester:${APP_VERSION}"
+                    }
+                }
+            }
+        }
+
+        stage('쿠버네티스 배포') {
+            steps {
+                // K8S 배포
+                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/namespace.yaml"
+                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/configmap.yaml"
+                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/secret.yaml"
+                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/service.yaml"
+                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/deployment.yaml"
+            }
+        }
+    }
+}

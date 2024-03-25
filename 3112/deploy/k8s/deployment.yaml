@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: anotherclass-312
+  name: api-tester-3112
+  labels:
+    part-of: k8s-anotherclass
+    component: backend-server
+    name: api-tester
+    instance: api-tester-3112
+    version: 3.0.0
+    managed-by: kubectl
+spec:
+  selector:
+    matchLabels:
+      part-of: k8s-anotherclass
+      component: backend-server
+      name: api-tester
+      instance: api-tester-3112
+  replicas: 8
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        part-of: k8s-anotherclass
+        component: backend-server
+        name: api-tester
+        instance: api-tester-3112
+        version: 3.0.0
+    spec:
+      serviceAccountName: api-tester-3112
+      nodeSelector:
+        kubernetes.io/hostname: k8s-master
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: api-tester-3112
+          image: 1pro/api-tester:3.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+          envFrom:
+            - configMapRef:
+                name: api-tester-3112-properties
+          env:
+            - name: downward_env_pod-name
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: downward_env_node-name
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: downward_env_pod-ip
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          terminationMessagePath: "/usr/src/myapp/log/termination.message"
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sh", "-c", "sleep 5"]
+          startupProbe:
+            httpGet:
+              path: "/startup"
+              port: 8080
+            periodSeconds: 5
+            failureThreshold: 24
+          readinessProbe:
+            httpGet:
+              path: "/readiness"
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: "/liveness"
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "100m"
+            limits:
+              memory: "200Mi"
+              cpu: "200m"
+          volumeMounts:
+            - name: secret-datasource
+              mountPath: /usr/src/myapp/datasource
+            - name: secret-api-token
+              mountPath: /usr/src/myapp/kube-apiserver
+            - name: downward-api-pod-info
+              mountPath: /usr/src/myapp/downward-api
+      volumes:
+        - name: secret-datasource
+          secret:
+            secretName: api-tester-3112-postgresql
+        - name: secret-api-token
+          secret:
+            secretName: api-tester-3112-token
+        - name: downward-api-pod-info
+          downwardAPI:
+            items:
+              - path: "metadata_labels"
+                fieldRef:
+                  fieldPath: metadata.labels
+              - path: "metadata_annotations"
+                fieldRef:
+                  fieldPath: metadata.annotations
