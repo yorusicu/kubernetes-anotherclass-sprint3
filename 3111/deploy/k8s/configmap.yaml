@@ -16,4 +16,3 @@ data:
   postgresql_filepath: "/usr/src/myapp/datasource/postgresql-info.yaml"
   downward_volume_filepath: "/usr/src/myapp/downward-api/"
   api-token_filepath: "/usr/src/myapp/kube-apiserver/"
-  termination_message-path: "/usr/src/myapp/log/termination.message"

@@ -56,7 +56,7 @@ pipeline {
             steps {
                 // DockerHub로 이미지 업로드
                 script{
-                    if (DOCKERHUB_USERNAME != "1pro") {
+                    if (DOCKERHUB_USERNAME == "1pro") {
                         echo "docker push ${DOCKERHUB_USERNAME}/api-tester:${APP_VERSION}"
                     } else {
                         sh "docker push ${DOCKERHUB_USERNAME}/api-tester:${APP_VERSION}"
@@ -72,6 +72,10 @@ pipeline {
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/configmap.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/secret.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/service.yaml"
+                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/serviceaccount.yaml"
+                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/secret-token.yaml"
+                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/role.yaml"
+                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/rolebinding.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/deployment.yaml"
             }
         }

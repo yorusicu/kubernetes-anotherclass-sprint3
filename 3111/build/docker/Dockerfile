@@ -8,7 +8,6 @@ ENTRYPOINT ["java", "-Dspring.profiles.active=${spring_profiles_active}", \
                     "-Ddownward.env.pod-ip=${downward_env_pod-ip}", \
                     "-Ddownward.env.node-name=${downward_env_node-name}", \
                     "-Dapi-token.filepath=${api-token_filepath}", \
-                    "-Dtermination.message-path=${termination_message-path}", \
                     "-jar", "/usr/src/myapp/app.jar"]
 EXPOSE 8080
 WORKDIR /usr/src/myapp
