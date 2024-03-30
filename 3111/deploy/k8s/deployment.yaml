@@ -32,9 +32,9 @@ spec:
       serviceAccountName: api-tester-3111
       nodeSelector:
         kubernetes.io/hostname: k8s-master
-      terminationGracePeriodSeconds: 30
       containers:
         - name: api-tester-3111
+          # 1pro는 본인의 dockerhub username으로 변경해 주세요.
           image: 1pro/api-tester:3.0.0
           imagePullPolicy: Always
           ports:
@@ -84,17 +84,12 @@ spec:
           volumeMounts:
             - name: secret-datasource
               mountPath: /usr/src/myapp/datasource
-            - name: secret-api-token
-              mountPath: /usr/src/myapp/kube-apiserver
             - name: downward-api-pod-info
               mountPath: /usr/src/myapp/downward-api
       volumes:
         - name: secret-datasource
           secret:
             secretName: api-tester-3111-postgresql
-        - name: secret-api-token
-          secret:
-            secretName: api-tester-3111-token
         - name: downward-api-pod-info
           downwardAPI:
             items:
