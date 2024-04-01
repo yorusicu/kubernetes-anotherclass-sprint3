@@ -12,7 +12,7 @@ pipeline {
         GITHUB_URL = 'https://github.com/k8s-1pro/kubernetes-anotherclass-sprint3.git'
 
         // 실습 넘버링
-        CLASS_NUM = '3111'
+        CLASS_NUM = '3212'
         // 버전
         APP_VERSION = '3.0.0'
     }
@@ -72,10 +72,6 @@ pipeline {
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/configmap.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/secret.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/service.yaml"
-                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/serviceaccount.yaml"
-                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/secret-token.yaml"
-                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/role.yaml"
-                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/rolebinding.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/deployment.yaml"
             }
         }

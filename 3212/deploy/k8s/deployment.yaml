@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: anotherclass-311
-  name: api-tester-3111
+  namespace: anotherclass-312
+  name: api-tester-3212
   labels:
     part-of: k8s-anotherclass
     component: backend-server
     name: api-tester
-    instance: api-tester-3111
+    instance: api-tester-3212
     version: 3.0.0
     managed-by: kubectl
 spec:
@@ -16,8 +16,8 @@ spec:
       part-of: k8s-anotherclass
       component: backend-server
       name: api-tester
-      instance: api-tester-3111
-  replicas: 1
+      instance: api-tester-3212
+  replicas: 8
   strategy:
     type: RollingUpdate
   template:
@@ -26,14 +26,15 @@ spec:
         part-of: k8s-anotherclass
         component: backend-server
         name: api-tester
-        instance: api-tester-3111
+        instance: api-tester-3212
         version: 3.0.0
     spec:
-      serviceAccountName: api-tester-3111
+      serviceAccountName: api-tester-3212
       nodeSelector:
         kubernetes.io/hostname: k8s-master
+      terminationGracePeriodSeconds: 60
       containers:
-        - name: api-tester-3111
+        - name: api-tester-3212
           # 1pro는 본인의 dockerhub username으로 변경해 주세요.
           image: 1pro/api-tester:3.0.0
           imagePullPolicy: Always
@@ -42,7 +43,7 @@ spec:
               name: http
           envFrom:
             - configMapRef:
-                name: api-tester-3111-properties
+                name: api-tester-3212-properties
           env:
             - name: downward_env_pod-name
               valueFrom:
@@ -56,6 +57,11 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+          terminationMessagePath: "/usr/src/myapp/log/termination.message"
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sh", "-c", "sleep 5; curl localhost:8080/graceful-shutdown"]
           startupProbe:
             httpGet:
               path: "/startup"
@@ -89,7 +95,7 @@ spec:
       volumes:
         - name: secret-datasource
           secret:
-            secretName: api-tester-3111-postgresql
+            secretName: api-tester-3212-postgresql
         - name: downward-api-pod-info
           downwardAPI:
             items:
