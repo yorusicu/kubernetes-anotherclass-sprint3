@@ -9,19 +9,23 @@ pipeline {
     environment {
         // 본인의 username으로 하실 분은 수정해주세요.
         DOCKERHUB_USERNAME = '1pro'
-        GITHUB_URL = 'https://github.com/k8s-1pro/kubernetes-anotherclass-sprint3.git'
+
+        // 배포용 Github - Sprint3의 배포를 Fork 하신 분
+        RELEASE_GITHUB_URL = 'https://github.com/k8s-1pro/kubernetes-anotherclass-sprint3.git'
+
+        // App용 Github - Api-Tester App 소스코드를 Fork 하신 분
+        APP_GITHUB_URL = 'https://github.com/k8s-1pro/kubernetes-anotherclass-api-tester.git'
+        APP_VERSION = '3.0.0'
 
         // 실습 넘버링
         CLASS_NUM = '3211'
-        // 버전
-        APP_VERSION = '3.0.0'
     }
     
     stages {
         stage('소스파일 체크아웃') {
             steps {
                 // 본인의 username으로 하실 분은 수정해주세요.
-                git branch: "${APP_VERSION}", url: 'https://github.com/k8s-1pro/kubernetes-anotherclass-api-tester.git'
+                git branch: "${APP_VERSION}", url: "${APP_GITHUB_URL}"
             }
         }
 
@@ -38,7 +42,7 @@ pipeline {
                 checkout scmGit(branches: [[name: '*/main']],
                     extensions: [[$class: 'SparseCheckoutPaths',
                     sparseCheckoutPaths: [[path: "/${CLASS_NUM}"]]]],
-					userRemoteConfigs: [[url: "${GITHUB_URL}"]])
+					userRemoteConfigs: [[url: "${RELEASE_GITHUB_URL}"]])
             }
         }
 
@@ -56,7 +60,7 @@ pipeline {
             steps {
                 // DockerHub로 이미지 업로드
                 script{
-                    if (DOCKERHUB_USERNAME != "1pro") {
+                    if (DOCKERHUB_USERNAME == "1pro") {
                         echo "docker push ${DOCKERHUB_USERNAME}/api-tester:${APP_VERSION}"
                     } else {
                         sh "docker push ${DOCKERHUB_USERNAME}/api-tester:${APP_VERSION}"
