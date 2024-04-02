@@ -16,3 +16,4 @@ data:
   postgresql_filepath: "/usr/src/myapp/datasource/postgresql-info.yaml"
   downward_volume_filepath: "/usr/src/myapp/downward-api/"
   api-token_filepath: "/var/run/secrets/kubernetes.io/"
+  api-token_cluster-url: "https://kubernetes.default"
