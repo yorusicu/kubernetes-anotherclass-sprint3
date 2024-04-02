@@ -29,7 +29,6 @@ spec:
         instance: api-tester-3212
         version: 3.0.0
     spec:
-      serviceAccountName: api-tester-3212
       nodeSelector:
         kubernetes.io/hostname: k8s-master
       terminationGracePeriodSeconds: 60
@@ -44,19 +43,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: api-tester-3212-properties
-          env:
-            - name: downward_env_pod-name
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: downward_env_node-name
-              valueFrom:
-                fieldRef:
-                  fieldPath: spec.nodeName
-            - name: downward_env_pod-ip
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
           terminationMessagePath: "/usr/src/myapp/log/termination.message"
           lifecycle:
             preStop:
@@ -90,18 +76,7 @@ spec:
           volumeMounts:
             - name: secret-datasource
               mountPath: /usr/src/myapp/datasource
-            - name: downward-api-pod-info
-              mountPath: /usr/src/myapp/downward-api
       volumes:
         - name: secret-datasource
           secret:
             secretName: api-tester-3212-postgresql
-        - name: downward-api-pod-info
-          downwardAPI:
-            items:
-              - path: "metadata_labels"
-                fieldRef:
-                  fieldPath: metadata.labels
-              - path: "metadata_annotations"
-                fieldRef:
-                  fieldPath: metadata.annotations
