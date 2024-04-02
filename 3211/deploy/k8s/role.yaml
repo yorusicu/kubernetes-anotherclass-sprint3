@@ -5,5 +5,5 @@ metadata:
   name: api-tester-3211
 rules:
   - apiGroups: ["*"]
-    resources: ["pods", "services", "deployments"]
-    verbs: ["get", "list"]
+    resources: ["pods", "services", "deployments"]  # 복수로 사용 kubectl api-resources
+    verbs: ["get", "list"]  # "get", "list", "watch", "create", "update", "patch", "delete"
