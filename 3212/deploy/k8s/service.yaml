@@ -19,5 +19,5 @@ spec:
   ports:
     - port: 80
       targetPort: http
-      nodePort: 30112
+      nodePort: 30212
   type: NodePort
