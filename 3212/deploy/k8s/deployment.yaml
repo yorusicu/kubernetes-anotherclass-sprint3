@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: anotherclass-312
+  namespace: anotherclass-321
   name: api-tester-3212
   labels:
     part-of: k8s-anotherclass
