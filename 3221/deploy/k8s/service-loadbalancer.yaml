@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: anotherclass-322
+  name: api-tester-3221-loadbalancer
+  labels:
+    part-of: k8s-anotherclass
+    component: backend-server
+    name: api-tester
+    instance: api-tester-3221
+    version: 3.0.0
+    managed-by: kubectl
+spec:
+  selector:
+    part-of: k8s-anotherclass
+    component: backend-server
+    name: api-tester
+    instance: api-tester-3221
+  ports:
+    - port: 80
+      targetPort: http
+  type: LoadBalancer
