@@ -19,5 +19,5 @@ spec:
   ports:
     - port: 80
       targetPort: http
-  type: clusterIP
+  type: ClusterIP
   clusterIP: None
