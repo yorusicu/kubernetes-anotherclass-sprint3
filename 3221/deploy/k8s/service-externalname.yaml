@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: anotherclass-322
-  name: api-tester-3221-externalname
-spec:
-  type: ExternalName
-  externalName: example.com

@@ -1,39 +1,36 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   namespace: anotherclass-322
-  name: api-tester-3221
+  name: database
   labels:
     part-of: k8s-anotherclass
-    component: backend-server
-    name: api-tester
-    instance: api-tester-3221
+    component: database
+    name: database
+    instance: database
     version: 3.0.0
     managed-by: kubectl
 spec:
   selector:
     matchLabels:
       part-of: k8s-anotherclass
-      component: backend-server
-      name: api-tester
-      instance: api-tester-3221
+      component: database
+      name: database
+      instance: database
   replicas: 2
-  strategy:
-    type: RollingUpdate
+  # 이 속성이 꼭 들어가야 Pod 명으로 DNS 조회가 가능함
+  serviceName: database-headless
   template:
     metadata:
       labels:
         part-of: k8s-anotherclass
-        component: backend-server
-        name: api-tester
-        instance: api-tester-3221
+        component: database
+        name: database
+        instance: database
         version: 3.0.0
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: k8s-master
-      terminationGracePeriodSeconds: 60
       containers:
-        - name: api-tester-3221
+        - name: database
           # 1pro는 본인의 dockerhub username으로 변경해 주세요.
           image: 1pro/api-tester:3.0.0
           imagePullPolicy: Always
@@ -43,20 +40,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: api-tester-3221-properties
-          terminationMessagePath: "/usr/src/myapp/log/termination.message"
-#          hostAliases:
-#            - ip: "20.200.245.247"
-#              hostnames:
-#                - "github.com"
-#          dnsPolicy: None
-#          dnsConfig:
-#            nameservers:
-#              - "8.8.8.8"
-#              - "8.8.4.4"
-          lifecycle:
-            preStop:
-              exec:
-                command: ["sh", "-c", "sleep 5; curl localhost:8080/graceful-shutdown"]
           startupProbe:
             httpGet:
               path: "/startup"
@@ -75,13 +58,6 @@ spec:
               port: 8080
             periodSeconds: 10
             failureThreshold: 3
-          resources:
-            requests:
-              memory: "100Mi"
-              cpu: "100m"
-            limits:
-              memory: "200Mi"
-              cpu: "200m"
           volumeMounts:
             - name: secret-datasource
               mountPath: /usr/src/myapp/datasource
