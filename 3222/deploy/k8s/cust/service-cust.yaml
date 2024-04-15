@@ -2,12 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: anotherclass-322
-  name: cust-3223
+  name: cust-3222
   labels:
     part-of: k8s-anotherclass
     component: backend-server
     name: cust
-    instance: cust-3223
+    instance: cust-3222
     version: 3.0.0
     managed-by: kubectl
 spec:
@@ -15,7 +15,7 @@ spec:
     part-of: k8s-anotherclass
     component: backend-server
     name: cust
-    instance: cust-3223
+    instance: cust-3222
   ports:
     - port: 80
       targetPort: http

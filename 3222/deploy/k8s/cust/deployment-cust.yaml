@@ -2,21 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: anotherclass-322
-  name: portal-3223
+  name: cust-3222
   labels:
     part-of: k8s-anotherclass
-    component: frontend-server
-    name: portal
-    instance: portal-3223
+    component: backend-server
+    name: cust
+    instance: cust-3222
     version: 3.0.0
     managed-by: kubectl
 spec:
   selector:
     matchLabels:
       part-of: k8s-anotherclass
-      component: frontend-server
-      name: portal
-      instance: portal-3223
+      component: backend-server
+      name: cust
+      instance: cust-3222
   replicas: 2
   strategy:
     type: RollingUpdate
@@ -24,13 +24,13 @@ spec:
     metadata:
       labels:
         part-of: k8s-anotherclass
-        component: frontend-server
-        name: portal
-        instance: portal-3223
+        component: backend-server
+        name: cust
+        instance: cust-3222
         version: 3.0.0
     spec:
       containers:
-        - name: portal-3223
+        - name: cust-3222
           # 1pro는 본인의 dockerhub username으로 변경해 주세요.
           image: 1pro/api-tester:3.0.0
           imagePullPolicy: Always
@@ -39,7 +39,7 @@ spec:
               name: http
           envFrom:
             - configMapRef:
-                name: api-tester-3223-properties
+                name: api-tester-3222-properties
           startupProbe:
             httpGet:
               path: "/startup"
@@ -64,4 +64,4 @@ spec:
       volumes:
         - name: secret-datasource
           secret:
-            secretName: api-tester-3223-postgresql
+            secretName: api-tester-3222-postgresql
