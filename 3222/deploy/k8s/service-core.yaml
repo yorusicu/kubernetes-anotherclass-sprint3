@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: anotherclass-322
+  name: core-3222
+  labels:
+    part-of: k8s-anotherclass
+    component: backend-server
+    name: core
+    instance: core-3222
+    version: 3.0.0
+    managed-by: kubectl
+spec:
+  selector:
+    part-of: k8s-anotherclass
+    component: backend-server
+    name: core
+    instance: core-3222
+  ports:
+    - port: 80
+      targetPort: http
+  type: ClusterIP

@@ -2,12 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: anotherclass-322
-  name: api-tester-3222-frontend
+  name: portal-3222
   labels:
     part-of: k8s-anotherclass
     component: frontend-server
-    name: api-tester
-    instance: api-tester-3222
+    name: portal
+    instance: portal-3222
     version: 3.0.0
     managed-by: kubectl
 spec:
@@ -15,9 +15,9 @@ spec:
     matchLabels:
       part-of: k8s-anotherclass
       component: frontend-server
-      name: api-tester
-      instance: api-tester-3222
-  replicas: 1
+      name: portal
+      instance: portal-3222
+  replicas: 2
   strategy:
     type: RollingUpdate
   template:
@@ -25,12 +25,12 @@ spec:
       labels:
         part-of: k8s-anotherclass
         component: frontend-server
-        name: api-tester
-        instance: api-tester-3222
+        name: portal
+        instance: portal-3222
         version: 3.0.0
     spec:
       containers:
-        - name: api-tester-3222
+        - name: portal-3222
           # 1pro는 본인의 dockerhub username으로 변경해 주세요.
           image: 1pro/api-tester:3.0.0
           imagePullPolicy: Always

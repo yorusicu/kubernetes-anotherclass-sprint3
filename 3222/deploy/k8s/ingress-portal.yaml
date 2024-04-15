@@ -1,7 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: api-tester-3222-frontend
+  namespace: anotherclass-322
+  name: portal-3222
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
@@ -14,6 +15,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: api-tester-3222-frontend
+                name: portal-3222
                 port:
                   number: 80

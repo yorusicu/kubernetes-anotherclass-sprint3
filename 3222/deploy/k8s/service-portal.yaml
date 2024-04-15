@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: anotherclass-322
+  name: portal-3222
+  labels:
+    part-of: k8s-anotherclass
+    component: frontend-server
+    name: portal
+    instance: portal-3222
+    version: 3.0.0
+    managed-by: kubectl
+spec:
+  selector:
+    part-of: k8s-anotherclass
+    component: frontend-server
+    name: portal
+    instance: portal-3222
+  ports:
+    - port: 80
+      targetPort: http
+  type: ClusterIP

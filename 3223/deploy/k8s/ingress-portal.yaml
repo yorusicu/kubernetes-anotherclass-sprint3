@@ -1,19 +1,24 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: api-tester-3222-backend
+  namespace: anotherclass-322
+  name: portal-3223
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
   rules:
-    - host: k8s.core
+    - host: portal.com
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: api-tester-3222-backend
+                name: portal-3223
                 port:
                   number: 80
+  tls:
+    - hosts:
+        - portal.com
+      secretName: portal-3223-tls
