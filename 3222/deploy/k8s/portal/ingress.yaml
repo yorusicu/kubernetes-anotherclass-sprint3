@@ -18,7 +18,7 @@ spec:
                 name: portal-3222
                 port:
                   number: 80
-  tls:
-    - hosts:
-        - portal.com
-      secretName: portal-3222-tls
+#  tls:
+#    - hosts:
+#        - portal.com
+#      secretName: portal-3222-tls
