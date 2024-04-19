@@ -72,11 +72,11 @@ pipeline {
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/configmap.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/secret.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/service-clusterip.yaml"
-                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/service-externalname.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/service-loadbalancer.yaml"
+                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/service-externalips.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/service-nodeport.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/deployment.yaml"
-                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/db-service-externalips.yaml"
+                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/db-service-externalname.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/db-service-headless.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/db-statefulset.yaml"
             }
