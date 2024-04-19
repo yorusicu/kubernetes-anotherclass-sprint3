@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: anotherclass-322
+  name: cust-3222-internal
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /cust(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: cust-3222
+                port:
+                  number: 80

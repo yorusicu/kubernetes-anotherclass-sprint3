@@ -56,7 +56,7 @@ pipeline {
             steps {
                 // DockerHub로 이미지 업로드
                 script{
-                    if (DOCKERHUB_USERNAME != "1pro") {
+                    if (DOCKERHUB_USERNAME == "1pro") {
                         echo "docker push ${DOCKERHUB_USERNAME}/api-tester:${APP_VERSION}"
                     } else {
                         sh "docker push ${DOCKERHUB_USERNAME}/api-tester:${APP_VERSION}"
@@ -72,13 +72,13 @@ pipeline {
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/configmap.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/secret.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/service-clusterip.yaml"
-                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/service-externalips.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/service-externalname.yaml"
-                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/service-headless.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/service-loadbalancer.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/service-nodeport.yaml"
                 sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/deployment.yaml"
-                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/statefulset.yaml"
+                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/db-service-externalips.yaml"
+                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/db-service-headless.yaml"
+                sh "kubectl apply -f ./${CLASS_NUM}/deploy/k8s/db-statefulset.yaml"
             }
         }
     }

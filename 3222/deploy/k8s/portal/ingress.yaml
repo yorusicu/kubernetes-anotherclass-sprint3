@@ -3,8 +3,8 @@ kind: Ingress
 metadata:
   namespace: anotherclass-322
   name: portal-3222
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+#  annotations:
+#    nginx.ingress.kubernetes.io/ssl-redirect: "true"  (기본값으로 적용)
 spec:
   ingressClassName: nginx
   rules:
