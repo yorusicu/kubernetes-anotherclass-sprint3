@@ -16,8 +16,5 @@ spec:
     component: database
     name: database
     instance: database
-  ports:
-    - port: 80
-      targetPort: http
   type: ClusterIP
   clusterIP: None
