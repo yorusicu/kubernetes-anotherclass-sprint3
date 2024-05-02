@@ -11,7 +11,8 @@ spec:
     - host: portal.com
       http:
         paths:
-          - pathType: Prefix
+          - path: /
+            pathType: Prefix
             backend:
               service:
                 name: portal-3222

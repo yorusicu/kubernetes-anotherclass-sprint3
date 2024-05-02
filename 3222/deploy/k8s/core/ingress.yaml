@@ -9,7 +9,8 @@ spec:
     - host: k8s.core
       http:
         paths:
-          - pathType: Prefix
+          - path: /
+            pathType: Prefix
             backend:
               service:
                 name: core-3222
