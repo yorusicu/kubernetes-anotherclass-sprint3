@@ -11,7 +11,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /com(/|$)(.*)
+          - path: /core(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
