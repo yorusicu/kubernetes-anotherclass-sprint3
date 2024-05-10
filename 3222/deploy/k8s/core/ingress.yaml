@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: anotherclass-322
-  name: core-3222-external
+  name: core-3222
 spec:
   ingressClassName: nginx
   rules:
