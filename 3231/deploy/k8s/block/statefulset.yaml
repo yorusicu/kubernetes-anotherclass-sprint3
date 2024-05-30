@@ -1,22 +1,22 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   namespace: anotherclass-323
-  name: application-3231
+  name: database-3231
   labels:
     part-of: k8s-anotherclass
-    component: backend-server
-    name: api-tester
-    instance: application-3231
+    component: database
+    name: database
+    instance: api-tester-3231
     version: 3.0.0
     managed-by: kubectl
 spec:
   selector:
     matchLabels:
       part-of: k8s-anotherclass
-      component: backend-server
-      name: api-tester
-      instance: application-3231
+      component: database
+      name: database
+      instance: database-3231
   replicas: 2
   strategy:
     type: RollingUpdate
@@ -24,13 +24,13 @@ spec:
     metadata:
       labels:
         part-of: k8s-anotherclass
-        component: backend-server
-        name: api-tester
-        instance: application-3231
+        component: database
+        name: database
+        instance: database-3231
         version: 3.0.0
     spec:
       containers:
-        - name: application-3231
+        - name: database-3231
           image: 1pro/api-tester:3.0.0
           imagePullPolicy: Always
           ports:
@@ -60,13 +60,19 @@ spec:
           volumeMounts:
             - name: secret-datasource
               mountPath: /usr/src/myapp/datasource
-            - name: shared-volume
-              mountPath: /mnt/shared
-              subPath: application-3231
+            - name: longhorn-volume
+              mountPath: /data/db
       volumes:
         - name: secret-datasource
           secret:
             secretName: api-tester-3231-postgresql
-        - name : shared-volume
-          persistentVolumeClaim:
-            claimName: shared-volume-3231
+  volumeClaimTemplates:
+    - metadata:
+        name: longhorn-volume
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1G
+        storageClassName: "longhorn"

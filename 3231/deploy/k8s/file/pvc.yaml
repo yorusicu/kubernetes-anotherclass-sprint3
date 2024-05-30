@@ -15,4 +15,4 @@ spec:
       part-of: k8s-anotherclass
       component: backend-server
       name: api-tester
-      instance: api-tester-3231
+      instance: application-3231
