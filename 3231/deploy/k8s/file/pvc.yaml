@@ -9,7 +9,10 @@ spec:
   resources:
     requests:
       storage: 1G
-  storageClassName: ""  // Storage 사용 안함 설정
+  storageClassName: ""
   selector:
     matchLabels:
-      pv: shared-volume-3231
+      part-of: k8s-anotherclass
+      component: backend-server
+      name: api-tester
+      instance: api-tester-3231
