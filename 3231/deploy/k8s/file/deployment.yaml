@@ -63,6 +63,7 @@ spec:
               mountPath: /usr/src/myapp/datasource
             - name: shared-volume
               mountPath: /mnt/shared
+              subPath: api-tester-3231
       volumes:
         - name: secret-datasource
           secret:
