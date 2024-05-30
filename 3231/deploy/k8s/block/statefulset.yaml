@@ -58,7 +58,7 @@ spec:
           volumeMounts:
             - name: secret-datasource
               mountPath: /usr/src/myapp/datasource
-            - name: longhorn-volume
+            - name: openebs-volume
               mountPath: /data/db
       volumes:
         - name: secret-datasource
@@ -66,11 +66,11 @@ spec:
             secretName: api-tester-3231-postgresql
   volumeClaimTemplates:
     - metadata:
-        name: longhorn-volume
+        name: openebs-volume
       spec:
         accessModes:
           - ReadWriteOnce
         resources:
           requests:
             storage: 1G
-        storageClassName: "longhorn"
+        storageClassName: "openebs-jiva-csi-sc"
