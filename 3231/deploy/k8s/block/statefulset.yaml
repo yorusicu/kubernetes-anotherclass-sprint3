@@ -18,8 +18,6 @@ spec:
       name: database
       instance: database-3231
   replicas: 2
-  strategy:
-    type: RollingUpdate
   template:
     metadata:
       labels:
