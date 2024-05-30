@@ -23,11 +23,11 @@ spec:
   template:
     metadata:
       labels:
-      part-of: k8s-anotherclass
-      component: backend-server
-      name: api-tester
-      instance: api-tester-3231
-      version: 3.0.0
+        part-of: k8s-anotherclass
+        component: backend-server
+        name: api-tester
+        instance: api-tester-3231
+        version: 3.0.0
     spec:
       containers:
         - name: api-tester-3222
