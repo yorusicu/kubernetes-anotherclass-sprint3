@@ -25,7 +25,8 @@ pipeline {
         stage('소스파일 체크아웃') {
             steps {
                 // 본인의 username으로 하실 분은 수정해주세요.
-                git branch: "${APP_VERSION}", url: "${APP_GITHUB_URL}"
+               // git branch: "${APP_VERSION}", url: "${APP_GITHUB_URL}"
+	    	git branch: "main", url: "${APP_GITHUB_URL}"
             }
         }
 
